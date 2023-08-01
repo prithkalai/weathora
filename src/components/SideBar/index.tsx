@@ -7,7 +7,7 @@ import {
 
 const SideBar = () => {
   return (
-    <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen ">
+    <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
       <SearchBar />
       <div className="">
         <WeatherIcon
