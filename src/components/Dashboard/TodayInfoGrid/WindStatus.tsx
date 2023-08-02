@@ -10,7 +10,7 @@ const WindStatus = ({ angle }: Props) => {
       </div>
       <div className="flex justify-start items-end font-quicksand text-black">
         <div className="mr-12">
-          <span className=" text-7xl ">7.7</span>
+          <span className=" text-7xl mr-1">7.7</span>
           <span className="text-xl">km/h</span>
         </div>
 

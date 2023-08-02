@@ -13,7 +13,7 @@ const InfoGrid = () => {
       <SunriseSunset />
       <Humidity percentage={22} />
       <Visibility />
-      <AirQuality />
+      <AirQuality aqi={320} />
     </div>
   );
 };
