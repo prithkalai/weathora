@@ -19,7 +19,7 @@ const DegreeSelector = ({ buttonText1, buttonText2 }: Props) => {
           selectedButton === 1
             ? " text-white bg-black"
             : " bg-gray-300 text-gray-700"
-        }`}
+        } transition-all duration-200 `}
         onClick={() => handleButtonClick(1)}
       >
         {buttonText1}
@@ -29,7 +29,7 @@ const DegreeSelector = ({ buttonText1, buttonText2 }: Props) => {
           selectedButton === 2
             ? "bg-black text-white"
             : "bg-gray-300 text-gray-700"
-        }`}
+        } transition-all duration-200 `}
         onClick={() => handleButtonClick(2)}
       >
         {buttonText2}
