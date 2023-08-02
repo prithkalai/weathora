@@ -15,7 +15,7 @@ const WeatherGrid = () => {
   return (
     <div className="flex flex-row gap-3 mx-auto mb-16">
       {testDatesISO8601.map((date) => (
-        <WeatherCard date={date} />
+        <WeatherCard key={date} date={date} />
       ))}
     </div>
   );
