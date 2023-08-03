@@ -12,6 +12,7 @@ import {
 
 function App() {
   // const [weatherData, setWeatherData] = useState<weatherDataIterface>();
+  const [time, setTime] = useState<Date>(new Date());
 
   // h - Hourly Variables
   const [rainChance, setRainChance] = useState(0); // Current chance of rain
@@ -71,6 +72,21 @@ function App() {
     setWeatherCode(data.hourly.weathercode[hourlyIndex]);
   };
 
+  // useEffect for time
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      const now = new Date();
+      if (now.getMinutes() !== time.getMinutes()) {
+        setTime(now);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(timerId);
+    };
+  }, [time]);
+
+  // UseEffect for first API call
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success);
@@ -78,17 +94,10 @@ function App() {
       console.log("Geolocation not supported");
     }
 
-    let latitude,
-      longitude = 0;
-
     function success(position: GeolocationPosition) {
-      latitude = position.coords.latitude;
-      console.log(position.coords.latitude);
-      longitude = position.coords.longitude;
-      console.log(position.coords.longitude);
       apiClient
         .get(
-          `/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+          `/forecast?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
         )
         .then((res) => {
           // setWeatherData(res.data);
@@ -104,6 +113,10 @@ function App() {
           rainChance={rainChance}
           currentTemperature={currTemp}
           weathercode={weatherMap[weatherCode]}
+          time={time.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
         />
         <DashBoard
           dates={dTime}

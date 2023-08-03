@@ -1,16 +1,18 @@
 import { SideBarProps } from "../../DataInterface";
-import { getCurrentDay, getCurrentTime } from "../../HelperFunctions";
+import { getCurrentDay } from "../../HelperFunctions";
 import WeatherIcon from "../AnimatedWeather";
 import SearchBar from "./SearchBar";
 import {
   AnimatedWeatherTimes,
   AnimatedWeatherTypes,
 } from "animated-weather-icon";
+import "../../App.css";
 
 const SideBar = ({
   rainChance,
   currentTemperature,
   weathercode,
+  time,
 }: SideBarProps) => {
   return (
     <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
@@ -28,7 +30,12 @@ const SideBar = ({
       </div>
       <div className="ml-12 h-fit font-quicksand mb-8">
         <span className=" text-black text-2xl ">{getCurrentDay()},</span>
-        <span className="text-neutral-500 text-2xl"> {getCurrentTime()}</span>
+        <span className="text-neutral-500 text-2xl">
+          {" "}
+          {time.split(":")[0]}
+          <span className="blink">:</span>
+          {time.split(":")[1]}
+        </span>
       </div>
       <div className="border-b-2 ml-8 mb-4 border-neutral-200 w-3/4"></div>
 

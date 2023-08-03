@@ -71,6 +71,7 @@ export interface SideBarProps {
   rainChance: number;
   currentTemperature: number;
   weathercode: weatherCodeData;
+  time: string;
 }
 
 // TODO: Find a way to show freezing rain/drizzle
