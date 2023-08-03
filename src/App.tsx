@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DashBoard from "./components/Dashboard";
 import SideBar from "./components/SideBar";
 import apiClient from "./services/apiClient";
-import weatherDataIterface, { weatherMap } from "./DataInterface";
+import weatherDataIterface, { GeoCodeData, weatherMap } from "./DataInterface";
 import axios from "axios";
 import {
   customRound,
@@ -13,6 +13,13 @@ import {
 function App() {
   // const [weatherData, setWeatherData] = useState<weatherDataIterface>();
   const [time, setTime] = useState<Date>(new Date());
+  const [currentHour, setCurrentHour] = useState<number>(new Date().getHours());
+  const [address, setAddress] = useState<GeoCodeData>({
+    city: "",
+    state: "",
+    country_code: "",
+    country: "",
+  });
 
   // h - Hourly Variables
   const [rainChance, setRainChance] = useState(0); // Current chance of rain
@@ -33,12 +40,45 @@ function App() {
   const [sunset, setSunset] = useState("");
   const [dweatherCodes, setDWeatherCodes] = useState<number[]>([]);
 
+  function setData() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success);
+    } else {
+      console.log("Geolocation not supported");
+    }
+
+    function success(position: GeolocationPosition) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      axios
+        .get(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`)
+        .then((res) => {
+          setAddress(res.data.address);
+          console.log(res.data.address);
+        });
+
+      apiClient
+        .get(
+          `/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+        )
+        .then((res) => {
+          // setWeatherData(res.data);
+          processData(res.data, latitude, longitude);
+        });
+    }
+  }
+
   // Function that sets the new variable
-  const processData = (data: weatherDataIterface) => {
+  const processData = (
+    data: weatherDataIterface,
+    latitude: number,
+    longitude: number
+  ) => {
     // Get Air Quality data
     axios
       .get(
-        "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=38.881&longitude=-77.1043&hourly=us_aqi&timezone=auto"
+        `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&hourly=us_aqi&timezone=auto`
       )
       .then((res) => {
         const aqiIndex = findIndexOfClosestTimeBeforeNow(res.data.hourly.time);
@@ -72,38 +112,40 @@ function App() {
     setWeatherCode(data.hourly.weathercode[hourlyIndex]);
   };
 
-  // useEffect for time
+  // useEffect for every minute
   useEffect(() => {
     const timerId = setInterval(() => {
       const now = new Date();
       if (now.getMinutes() !== time.getMinutes()) {
         setTime(now);
       }
-    }, 1000);
+    }, 1000); // Checks every second
 
     return () => {
       clearInterval(timerId);
     };
   }, [time]);
 
+  // useEffect for every hour
+  useEffect(() => {
+    const hourCheckIntervalId = setInterval(() => {
+      const nowHour = new Date().getHours();
+      if (nowHour !== currentHour) {
+        setCurrentHour(nowHour);
+        // Reload all the necessary
+        // fetchData(); // Call your state-setting function here
+        setData();
+      }
+    }, 1000); // checks every second
+
+    return () => {
+      clearInterval(hourCheckIntervalId); // clear interval on component unmount
+    };
+  }, [currentHour]);
+
   // UseEffect for first API call
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success);
-    } else {
-      console.log("Geolocation not supported");
-    }
-
-    function success(position: GeolocationPosition) {
-      apiClient
-        .get(
-          `/forecast?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
-        )
-        .then((res) => {
-          // setWeatherData(res.data);
-          processData(res.data);
-        });
-    }
+    setData();
   }, []);
 
   return (
@@ -117,6 +159,7 @@ function App() {
             hour: "2-digit",
             minute: "2-digit",
           })}
+          address={address}
         />
         <DashBoard
           dates={dTime}

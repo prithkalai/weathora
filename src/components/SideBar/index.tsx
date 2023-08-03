@@ -13,6 +13,7 @@ const SideBar = ({
   currentTemperature,
   weathercode,
   time,
+  address,
 }: SideBarProps) => {
   return (
     <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
@@ -71,7 +72,7 @@ const SideBar = ({
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-white text-center text-2xl font-bold bg-opacity-50 p-4 rounded">
-            New York City, USA
+            {address.city}, {address.country}
           </p>
         </div>
       </div>

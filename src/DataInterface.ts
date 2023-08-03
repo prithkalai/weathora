@@ -22,6 +22,13 @@ export default interface weatherDataInterface {
   };
 }
 
+export interface GeoCodeData {
+  city: string;
+  state: string;
+  country_code: string;
+  country: string;
+}
+
 export interface WeatherCardProps {
   dates: string[];
   minTemps: number[];
@@ -72,6 +79,7 @@ export interface SideBarProps {
   currentTemperature: number;
   weathercode: weatherCodeData;
   time: string;
+  address: GeoCodeData;
 }
 
 // TODO: Find a way to show freezing rain/drizzle
