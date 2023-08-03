@@ -132,8 +132,6 @@ function App() {
       const nowHour = new Date().getHours();
       if (nowHour !== currentHour) {
         setCurrentHour(nowHour);
-        // Reload all the necessary
-        // fetchData(); // Call your state-setting function here
         setData();
       }
     }, 1000); // checks every second
