@@ -1,8 +1,6 @@
-interface Props {
-  angle: number;
-}
+import { WindStatusProps } from "../../../DataInterface";
 
-const WindStatus = ({ angle }: Props) => {
+const WindStatus = ({ speed, angle }: WindStatusProps) => {
   return (
     <div className="flex flex-col w-full h-48 rounded-2xl bg-white pt-4 pl-6">
       <div className=" font-quicksand text-black text-opacity-40 mb-6 ">
@@ -10,7 +8,7 @@ const WindStatus = ({ angle }: Props) => {
       </div>
       <div className="flex justify-start items-end font-quicksand text-black">
         <div className="mr-12">
-          <span className=" text-7xl mr-1">7.7</span>
+          <span className=" text-7xl mr-1">{speed}</span>
           <span className="text-xl">km/h</span>
         </div>
 
@@ -22,7 +20,7 @@ const WindStatus = ({ angle }: Props) => {
 
 export default WindStatus;
 
-const Compass = ({ angle }: Props) => {
+const Compass = ({ angle }: { angle: number }) => {
   const arrowStyle = {
     transform: `rotate(${angle - 90}deg)`,
   };

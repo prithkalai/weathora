@@ -1,10 +1,7 @@
 import { Line } from "rc-progress";
+import { HumidityProps } from "../../../DataInterface";
 
-interface Props {
-  percentage: number;
-}
-
-const Humidity = ({ percentage }: Props) => {
+const Humidity = ({ percentage }: HumidityProps) => {
   let strokeColor: string = "";
   let description: string = "";
 

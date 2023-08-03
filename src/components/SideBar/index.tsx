@@ -1,3 +1,5 @@
+import { SideBarProps } from "../../DataInterface";
+import { getCurrentDay, getCurrentTime } from "../../HelperFunctions";
 import WeatherIcon from "../AnimatedWeather";
 import SearchBar from "./SearchBar";
 import {
@@ -5,12 +7,11 @@ import {
   AnimatedWeatherTypes,
 } from "animated-weather-icon";
 
-interface Props {
-  rainChance: number;
-  currentTemperature: number;
-}
-
-const SideBar = ({ rainChance, currentTemperature }: Props) => {
+const SideBar = ({
+  rainChance,
+  currentTemperature,
+  weathercode,
+}: SideBarProps) => {
   return (
     <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
       <SearchBar />
@@ -18,7 +19,7 @@ const SideBar = ({ rainChance, currentTemperature }: Props) => {
         <WeatherIcon
           className="w-80 h-72 mr-10"
           weatherTime={AnimatedWeatherTimes.Day}
-          weatherType={AnimatedWeatherTypes.DrizzleShowers}
+          weatherType={weathercode.icon}
           disableAnimations={false}
         />
       </div>
@@ -26,8 +27,8 @@ const SideBar = ({ rainChance, currentTemperature }: Props) => {
         {currentTemperature}°
       </div>
       <div className="ml-12 h-fit font-quicksand mb-8">
-        <span className=" text-black text-2xl ">Monday,</span>
-        <span className="text-neutral-500 text-2xl"> 16:00</span>
+        <span className=" text-black text-2xl ">{getCurrentDay()},</span>
+        <span className="text-neutral-500 text-2xl"> {getCurrentTime()}</span>
       </div>
       <div className="border-b-2 ml-8 mb-4 border-neutral-200 w-3/4"></div>
 
@@ -35,11 +36,11 @@ const SideBar = ({ rainChance, currentTemperature }: Props) => {
         <WeatherIcon
           className="w-10 h-10 ml-10"
           weatherTime={AnimatedWeatherTimes.Day}
-          weatherType={AnimatedWeatherTypes.Clear}
+          weatherType={weathercode.icon}
           disableAnimations={false}
         />
         <div className="h-fit font-quicksand">
-          <span className=" text-black text-sm ">Overcast</span>
+          <span className=" text-black text-sm ">{weathercode.desc}</span>
         </div>
       </div>
 

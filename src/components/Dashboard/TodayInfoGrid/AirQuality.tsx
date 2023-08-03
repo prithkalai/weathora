@@ -1,10 +1,7 @@
 import { Line } from "rc-progress";
+import { AQIProps } from "../../../DataInterface";
 
-interface Props {
-  aqi: number;
-}
-
-const AirQuality = ({ aqi }: Props) => {
+const AirQuality = ({ aqi }: AQIProps) => {
   let strokeColor: string = "";
   let description: string = "";
 

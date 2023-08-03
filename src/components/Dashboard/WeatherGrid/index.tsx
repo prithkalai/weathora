@@ -1,7 +1,12 @@
-import { WeatherCardProps } from "../../../DataInterface";
+import { WeatherCardProps, weatherMap } from "../../../DataInterface";
 import WeatherCard from "./WeatherCard";
 
-const WeatherGrid = ({ dates, minTemps, maxTemps }: WeatherCardProps) => {
+const WeatherGrid = ({
+  dates,
+  minTemps,
+  maxTemps,
+  weatherCodes,
+}: WeatherCardProps) => {
   return (
     <div className="flex flex-row gap-3 mx-auto mb-16">
       {dates.map((date, index) => (
@@ -10,6 +15,7 @@ const WeatherGrid = ({ dates, minTemps, maxTemps }: WeatherCardProps) => {
           date={date}
           maxTemp={maxTemps[index]}
           minTemp={minTemps[index]}
+          weatherIcon={weatherMap[weatherCodes[index]].icon}
         />
       ))}
     </div>
