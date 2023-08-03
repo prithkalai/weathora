@@ -1,4 +1,6 @@
-const SunriseSunset = () => {
+import { SunriseSunsetProps } from "../../../DataInterface";
+
+const SunriseSunset = ({ sunriseTime, sunsetTime }: SunriseSunsetProps) => {
   return (
     <div className="flex flex-col gap-4 w-full h-48 rounded-2xl bg-white pt-4 pl-6">
       <div className=" font-quicksand text-black text-opacity-40 ">
@@ -63,7 +65,9 @@ const SunriseSunset = () => {
             />
           </g>
         </svg>
-        <div className="font-quicksand text-black text-xl">6:35 AM</div>
+        <div className="font-quicksand text-black text-xl">
+          {formatTime(sunriseTime)}
+        </div>
       </div>
 
       <div className="flex flex-row items-center gap-6">
@@ -126,10 +130,24 @@ const SunriseSunset = () => {
             />
           </g>
         </svg>
-        <div className="font-quicksand text-black text-xl">9:25 PM</div>
+        <div className="font-quicksand text-black text-xl">
+          {formatTime(sunsetTime)}
+        </div>
       </div>
     </div>
   );
 };
+
+function formatTime(dateString: string): string {
+  const date = new Date(dateString);
+  const hours = date.getHours();
+  const minutes = ("0" + date.getMinutes()).slice(-2); // Format to 2 digits
+  const period = hours >= 12 ? "PM" : "AM";
+
+  // Convert hour from 24 hour format to 12 hour format
+  const hours12 = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
+
+  return `${hours12}:${minutes} ${period}`;
+}
 
 export default SunriseSunset;

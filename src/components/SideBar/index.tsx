@@ -5,7 +5,12 @@ import {
   AnimatedWeatherTypes,
 } from "animated-weather-icon";
 
-const SideBar = () => {
+interface Props {
+  rainChance: number;
+  currentTemperature: number;
+}
+
+const SideBar = ({ rainChance, currentTemperature }: Props) => {
   return (
     <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
       <SearchBar />
@@ -18,7 +23,7 @@ const SideBar = () => {
         />
       </div>
       <div className="ml-12 h-fit text-black font-quicksand text-[100px] ">
-        12°
+        {currentTemperature}°
       </div>
       <div className="ml-12 h-fit font-quicksand mb-8">
         <span className=" text-black text-2xl ">Monday,</span>
@@ -46,7 +51,8 @@ const SideBar = () => {
           disableAnimations={false}
         />
         <div className="h-fit font-quicksand">
-          <span className=" text-black text-sm ">Rain - 30%</span>
+          <span className=" text-black text-sm ">Rain </span>
+          <span className=" text-black text-sm ">- {rainChance}%</span>
         </div>
       </div>
 
