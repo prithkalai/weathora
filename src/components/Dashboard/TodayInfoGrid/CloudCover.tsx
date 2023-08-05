@@ -26,16 +26,14 @@ const CloudCover = ({ cloudPercentage }: Props) => {
 
             {/* Filled version of the cloud, using the clipping path */}
             <image
-              href="./public/cloud_empty.svg"
+              href="/cloud_empty.svg"
               width="64"
               height="30"
               clipPath="url(#clip)"
             />
 
             {/* Empty version of the cloud */}
-            <image href="./public/cloud_filled.svg" width="64" height="32" />
-
-            {/* Optional text */}
+            <image href="/cloud_filled.svg" width="64" height="32" />
           </svg>
           <div className="absolute flex inset-0 justify-center items-center top-[120px] left-3">
             <span className=" text-3xl mr-[1px]">{cloudPercentage}</span>
