@@ -7,6 +7,7 @@ import {
   AnimatedWeatherTypes,
 } from "animated-weather-icon";
 import "../../App.css";
+import { SyncLoader } from "react-spinners";
 
 const SideBar = ({
   rainChance,
@@ -16,17 +17,24 @@ const SideBar = ({
   address,
   apparentTemperature,
   isDay,
+  weatherDataLoading,
 }: SideBarProps) => {
   return (
     <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
       <SearchBar />
       <div className="mb-4">
-        <WeatherIcon
-          className="w-80 h-72 mr-10"
-          weatherTime={AnimatedWeatherTimes[isDay ? "Day" : "Night"]}
-          weatherType={weathercode.icon}
-          disableAnimations={false}
-        />
+        {weatherDataLoading ? (
+          <div className="flex justify-center items-center w-80 h-72 mr-10">
+            <SyncLoader color="#181818" />
+          </div>
+        ) : (
+          <WeatherIcon
+            className="w-80 h-72 mr-10"
+            weatherTime={AnimatedWeatherTimes[isDay ? "Day" : "Night"]}
+            weatherType={weathercode.icon}
+            disableAnimations={false}
+          />
+        )}
       </div>
       <div className="ml-12 text-black font-quicksand text-8xl ">
         {currentTemperature}°
@@ -45,30 +53,37 @@ const SideBar = ({
       </div>
       <div className="border-b-2 ml-8 mb-4 border-neutral-200 w-3/4"></div>
 
-      <div className=" flex flex-row items-center gap-2">
-        <WeatherIcon
-          className="w-10 h-10 ml-10"
-          weatherTime={AnimatedWeatherTimes[isDay ? "Day" : "Night"]}
-          weatherType={weathercode.icon}
-          disableAnimations={false}
-        />
-        <div className="h-fit font-quicksand">
-          <span className=" text-black text-sm ">{weathercode.desc}</span>
+      {weatherDataLoading ? (
+        <div className="flex flex-row justify-center items-center w-80 h-32">
+          <SyncLoader color="#181818" />
         </div>
-      </div>
-
-      <div className="mb-8 flex flex-row items-center gap-2">
-        <WeatherIcon
-          className="w-10 h-10 ml-10"
-          weatherTime={AnimatedWeatherTimes.Day}
-          weatherType={AnimatedWeatherTypes.HeavyRain}
-          disableAnimations={false}
-        />
-        <div className="h-fit font-quicksand">
-          <span className=" text-black text-sm ">Rain </span>
-          <span className=" text-black text-sm ">- {rainChance}%</span>
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className=" flex flex-row items-center gap-2">
+            <WeatherIcon
+              className="w-10 h-10 ml-10"
+              weatherTime={AnimatedWeatherTimes[isDay ? "Day" : "Night"]}
+              weatherType={weathercode.icon}
+              disableAnimations={false}
+            />
+            <div className="h-fit font-quicksand">
+              <span className=" text-black text-sm ">{weathercode.desc}</span>
+            </div>
+          </div>
+          <div className="mb-8 flex flex-row items-center gap-2">
+            <WeatherIcon
+              className="w-10 h-10 ml-10"
+              weatherTime={AnimatedWeatherTimes.Day}
+              weatherType={AnimatedWeatherTypes.HeavyRain}
+              disableAnimations={false}
+            />
+            <div className="h-fit font-quicksand">
+              <span className=" text-black text-sm ">Rain </span>
+              <span className=" text-black text-sm ">- {rainChance}%</span>
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="relative w-3/4 h-24 ml-8 rounded-2xl">
         <img

@@ -69,7 +69,6 @@ function App() {
           `/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,temperature_80m,apparent_temperature,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
         )
         .then((res) => {
-          console.log(weatherLoading);
           processData(res.data, latitude, longitude);
           setWeatherLoading(false);
         });
@@ -175,6 +174,7 @@ function App() {
           })}
           address={address}
           isDay={isDay}
+          weatherDataLoading={weatherLoading}
         />
         <DashBoard
           dates={dTime}
