@@ -20,6 +20,7 @@ function App() {
     country_code: "",
     country: "",
   });
+  const [isDay, setIsDay] = useState(true);
 
   // Variables for Loading
   const [weatherLoading, setWeatherLoading] = useState(true);
@@ -65,7 +66,7 @@ function App() {
 
       apiClient
         .get(
-          `/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,temperature_80m,apparent_temperature,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+          `/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,temperature_80m,apparent_temperature,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
         )
         .then((res) => {
           console.log(weatherLoading);
@@ -102,6 +103,8 @@ function App() {
     const dailyIndex = findTodayIndex(data.daily.time);
     setSunrise(data.daily.sunrise[dailyIndex]);
     setSunset(data.daily.sunset[dailyIndex]);
+
+    setIsDay(data.current_weather.is_day);
 
     // Find Hourly Index
     const hourlyIndex = findIndexOfClosestTimeBeforeNow(data.hourly.time);
@@ -171,6 +174,7 @@ function App() {
             minute: "2-digit",
           })}
           address={address}
+          isDay={isDay}
         />
         <DashBoard
           dates={dTime}

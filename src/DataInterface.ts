@@ -24,6 +24,9 @@ export default interface weatherDataInterface {
     sunrise: string[];
     sunset: string[];
   };
+  current_weather: {
+    is_day: boolean;
+  };
 }
 
 export interface GeoCodeData {
@@ -100,6 +103,7 @@ export interface SideBarProps {
   apparentTemperature: number;
   time: string;
   address: GeoCodeData;
+  isDay: boolean;
 }
 
 // TODO: Find a way to show freezing rain/drizzle

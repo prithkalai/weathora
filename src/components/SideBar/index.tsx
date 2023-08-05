@@ -15,6 +15,7 @@ const SideBar = ({
   time,
   address,
   apparentTemperature,
+  isDay,
 }: SideBarProps) => {
   return (
     <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
@@ -22,7 +23,7 @@ const SideBar = ({
       <div className="mb-4">
         <WeatherIcon
           className="w-80 h-72 mr-10"
-          weatherTime={AnimatedWeatherTimes.Day}
+          weatherTime={AnimatedWeatherTimes[isDay ? "Day" : "Night"]}
           weatherType={weathercode.icon}
           disableAnimations={false}
         />
@@ -47,7 +48,7 @@ const SideBar = ({
       <div className=" flex flex-row items-center gap-2">
         <WeatherIcon
           className="w-10 h-10 ml-10"
-          weatherTime={AnimatedWeatherTimes.Day}
+          weatherTime={AnimatedWeatherTimes[isDay ? "Day" : "Night"]}
           weatherType={weathercode.icon}
           disableAnimations={false}
         />
