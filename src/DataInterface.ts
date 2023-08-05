@@ -105,6 +105,7 @@ export interface SideBarProps {
   address: GeoCodeData;
   isDay: boolean;
   weatherDataLoading: boolean;
+  handleOnClick: () => void;
 }
 
 // TODO: Find a way to show freezing rain/drizzle

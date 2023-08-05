@@ -47,6 +47,7 @@ function App() {
   const [sunset, setSunset] = useState("");
   const [dweatherCodes, setDWeatherCodes] = useState<number[]>([]);
 
+  // Function that is called on first loading
   function setData() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success);
@@ -75,6 +76,12 @@ function App() {
     }
   }
 
+  // Function that handles when the location button is clicked
+  function handleOnClick() {
+    setWeatherLoading(true);
+    setData();
+  }
+
   // Function that sets the new variables from the data received
   const processData = (
     data: weatherDataIterface,
@@ -95,7 +102,6 @@ function App() {
     setDTime(data.daily.time);
     setDMaxTemp(data.daily.temperature_2m_max);
     setDMinTemp(data.daily.temperature_2m_min);
-    console.log(data.daily.weathercode);
     setDWeatherCodes(data.daily.weathercode);
 
     // Find the Daily Index
@@ -107,7 +113,6 @@ function App() {
 
     // Find Hourly Index
     const hourlyIndex = findIndexOfClosestTimeBeforeNow(data.hourly.time);
-    console.log(hourlyIndex);
 
     // Set the hourly variables
     setCurrTemp(customRound(data.hourly.temperature_2m[hourlyIndex]));
@@ -175,6 +180,7 @@ function App() {
           address={address}
           isDay={isDay}
           weatherDataLoading={weatherLoading}
+          handleOnClick={handleOnClick}
         />
         <DashBoard
           dates={dTime}

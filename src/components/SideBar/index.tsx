@@ -18,10 +18,11 @@ const SideBar = ({
   apparentTemperature,
   isDay,
   weatherDataLoading,
+  handleOnClick,
 }: SideBarProps) => {
   return (
     <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
-      <SearchBar />
+      <SearchBar handleOnClick={handleOnClick} />
       <div className="mb-4">
         {weatherDataLoading ? (
           <div className="flex justify-center items-center w-80 h-72 mr-10">

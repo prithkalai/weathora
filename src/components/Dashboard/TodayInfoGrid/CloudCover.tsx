@@ -3,8 +3,6 @@ interface Props {
 }
 
 const CloudCover = ({ cloudPercentage }: Props) => {
-  console.log((cloudPercentage / 100) * 64);
-
   return (
     <div className="flex flex-col w-full h-48 rounded-2xl bg-white pt-4 ">
       <div className=" font-quicksand text-black text-opacity-40 pl-6">

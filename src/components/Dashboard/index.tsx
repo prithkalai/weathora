@@ -1,8 +1,8 @@
-import { Shimmer } from "react-shimmer";
 import { TodayHighlightProps, WeatherCardProps } from "../../DataInterface";
 import NavBar from "./NavBar";
 import InfoGrid from "./TodayInfoGrid";
 import WeatherGrid from "./WeatherGrid";
+import { ShimmerList } from "../../HelperFunctions";
 
 const DashBoard: React.FC<TodayHighlightProps & WeatherCardProps> = ({
   sunriseTime,
@@ -26,7 +26,7 @@ const DashBoard: React.FC<TodayHighlightProps & WeatherCardProps> = ({
       <NavBar />
       {weatherDataLoading ? (
         <div className="flex gap-3 mx-auto mb-12">
-          <ShimmerList count={7} />
+          <ShimmerList width={143} height={160} count={7} />
         </div>
       ) : (
         <WeatherGrid
@@ -55,17 +55,6 @@ const DashBoard: React.FC<TodayHighlightProps & WeatherCardProps> = ({
       />
     </div>
   );
-};
-
-// Funtion to return the shimmer list
-const ShimmerList = ({ count }: { count: number }) => {
-  const shimmerItems = Array.from({ length: count }, (_, index) => (
-    <div key={index}>
-      <Shimmer width={143} height={160} className="rounded-xl" />
-    </div>
-  ));
-
-  return <>{shimmerItems}</>;
 };
 
 export default DashBoard;

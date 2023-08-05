@@ -1,7 +1,11 @@
 import { IoSearchCircle } from "react-icons/io5";
 import { MdOutlineMyLocation } from "react-icons/md";
 
-const SearchBar = () => {
+interface Props {
+  handleOnClick: () => void;
+}
+
+const SearchBar = ({ handleOnClick }: Props) => {
   return (
     <div className="flex flex-row gap-3 items-center justify-start text-black ml-8 mb-2">
       <div className="flex flex-row gap-3 items-center">
@@ -15,7 +19,7 @@ const SearchBar = () => {
         </form>
       </div>
       <div className="flex w-6 h-6 items-center justify-center bg-[#f6f6f8] rounded-full text-lg">
-        <button>
+        <button onClick={handleOnClick}>
           <MdOutlineMyLocation />
         </button>
       </div>

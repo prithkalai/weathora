@@ -1,4 +1,3 @@
-import { Shimmer } from "react-shimmer";
 import { TodayHighlightProps } from "../../../DataInterface";
 import AirQuality from "./AirQuality";
 import Humidity from "./Humidity";
@@ -8,6 +7,7 @@ import Visibility from "./Visibility";
 import WindStatus from "./WindStatus";
 import CloudCover from "./CloudCover";
 import SurfacePressure from "./SurfacePressure";
+import { ShimmerList } from "../../../HelperFunctions";
 
 const InfoGrid: React.FC<TodayHighlightProps> = ({
   sunriseTime,
@@ -26,8 +26,7 @@ const InfoGrid: React.FC<TodayHighlightProps> = ({
     <>
       {weatherDataLoading ? (
         <div className="grid grid-cols-4 gap-y-5 gap-x-14">
-          <ShimmerList count={8} />
-          <p>{}</p>
+          <ShimmerList width={253} height={192} count={8} />
         </div>
       ) : (
         <div className="grid grid-cols-4 gap-y-5 gap-x-5 ">
@@ -46,14 +45,3 @@ const InfoGrid: React.FC<TodayHighlightProps> = ({
 };
 
 export default InfoGrid;
-
-// Funtion to return the shimmer list
-const ShimmerList = ({ count }: { count: number }) => {
-  const shimmerItems = Array.from({ length: count }, (_, index) => (
-    <div key={index}>
-      <Shimmer width={253} height={192} className="rounded-xl" />
-    </div>
-  ));
-
-  return <>{shimmerItems}</>;
-};

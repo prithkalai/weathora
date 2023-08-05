@@ -1,3 +1,5 @@
+import { Shimmer } from "react-shimmer";
+
 // Function that returns the current day
 export function getCurrentDay(): string {
   const days = [
@@ -59,3 +61,22 @@ export function findIndexOfClosestTimeBeforeNow(timeArray: string[]): number {
 
   return closestTimeIndex;
 }
+
+// Funtion to return the shimmer list
+export const ShimmerList = ({
+  count,
+  width,
+  height,
+}: {
+  count: number;
+  width: number;
+  height: number;
+}) => {
+  const shimmerItems = Array.from({ length: count }, (_, index) => (
+    <div key={index}>
+      <Shimmer width={width} height={height} className="rounded-xl" />
+    </div>
+  ));
+
+  return <>{shimmerItems}</>;
+};
