@@ -1,3 +1,4 @@
+// Function that returns the current day
 export function getCurrentDay(): string {
   const days = [
     "Sunday",
@@ -13,6 +14,7 @@ export function getCurrentDay(): string {
   return days[dayIndex];
 }
 
+// Function that returns the current time
 export function getCurrentTime(): string {
   const now = new Date();
   const hours = now.getHours();
@@ -23,11 +25,14 @@ export function getCurrentTime(): string {
   return `${formattedHours}:${formattedMinutes} ${ampm}`;
 }
 
+// Function the rounds numbers up or down based on the decimal point
 export function customRound(num: number): number {
   let decimalPart = num - Math.floor(num);
   return decimalPart > 0.5 ? Math.ceil(num) : Math.floor(num);
 }
 
+// Important Function
+// Finds the index of the current hour to display the relevant data for the current hour
 export function findTodayIndex(dates: string[]): number {
   const date = new Date();
   const year = date.getFullYear();
@@ -39,6 +44,7 @@ export function findTodayIndex(dates: string[]): number {
   return dates.findIndex((date) => date === today);
 }
 
+// Function that finds the closes index before the current time
 export function findIndexOfClosestTimeBeforeNow(timeArray: string[]): number {
   const now = new Date();
 

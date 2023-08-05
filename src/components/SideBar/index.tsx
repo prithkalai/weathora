@@ -14,11 +14,12 @@ const SideBar = ({
   weathercode,
   time,
   address,
+  apparentTemperature,
 }: SideBarProps) => {
   return (
     <div className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10">
       <SearchBar />
-      <div className="">
+      <div className="mb-4">
         <WeatherIcon
           className="w-80 h-72 mr-10"
           weatherTime={AnimatedWeatherTimes.Day}
@@ -26,8 +27,11 @@ const SideBar = ({
           disableAnimations={false}
         />
       </div>
-      <div className="ml-12 h-fit text-black font-quicksand text-[100px] ">
+      <div className="ml-12 text-black font-quicksand text-8xl ">
         {currentTemperature}°
+      </div>
+      <div className="ml-12 text-neutral-500 text-lg font-quicksand mb-6">
+        Feels like {apparentTemperature}°
       </div>
       <div className="ml-12 h-fit font-quicksand mb-8">
         <span className=" text-black text-2xl ">{getCurrentDay()},</span>

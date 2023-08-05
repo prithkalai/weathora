@@ -14,6 +14,7 @@ export default interface weatherDataInterface {
     uv_index: number[];
     cloudcover: number[];
     surface_pressure: number[];
+    apparent_temperature: number[];
   };
   daily: {
     time: string[];
@@ -96,6 +97,7 @@ export interface SideBarProps {
   rainChance: number;
   currentTemperature: number;
   weathercode: weatherCodeData;
+  apparentTemperature: number;
   time: string;
   address: GeoCodeData;
 }

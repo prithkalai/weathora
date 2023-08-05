@@ -35,7 +35,8 @@ function App() {
   const [aqi, setAQI] = useState(0); // Current AQI
   const [weatherCode, setWeatherCode] = useState(0); // Current Hourly Weather Code
   const [cloudPercentage, setCloudPercentage] = useState(0); // Current Cloud Cover
-  const [surfacePressure, setSurfacePressure] = useState(0);
+  const [surfacePressure, setSurfacePressure] = useState(0); // Current Surface Pressure
+  const [apparentTemperature, setApparentTemperature] = useState(0); // Current Apparent Temperature
 
   // d - Daily variables
   const [dTime, setDTime] = useState<string[]>([]);
@@ -64,7 +65,7 @@ function App() {
 
       apiClient
         .get(
-          `/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,temperature_80m,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+          `/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,temperature_80m,apparent_temperature,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
         )
         .then((res) => {
           console.log(weatherLoading);
@@ -117,6 +118,9 @@ function App() {
     setWeatherCode(data.hourly.weathercode[hourlyIndex]);
     setCloudPercentage(data.hourly.cloudcover[hourlyIndex]);
     setSurfacePressure(data.hourly.surface_pressure[hourlyIndex]);
+    setApparentTemperature(
+      customRound(data.hourly.apparent_temperature[hourlyIndex])
+    );
   };
 
   // useEffect for every minute
@@ -160,6 +164,7 @@ function App() {
         <SideBar
           rainChance={rainChance}
           currentTemperature={currTemp}
+          apparentTemperature={apparentTemperature}
           weathercode={weatherMap[weatherCode]}
           time={time.toLocaleTimeString("en-US", {
             hour: "2-digit",
