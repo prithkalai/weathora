@@ -16,6 +16,9 @@ const DashBoard: React.FC<TodayHighlightProps & WeatherCardProps> = ({
   percentage,
   distance,
   aqi,
+  weatherDataLoading,
+  cloudPercentage,
+  surfacePressure,
 }) => {
   return (
     <div className="flex flex-col w-full h-screen bg-neutral-100 pt-8 pl-12 pr-10">
@@ -38,6 +41,9 @@ const DashBoard: React.FC<TodayHighlightProps & WeatherCardProps> = ({
         percentage={percentage}
         distance={distance}
         aqi={aqi}
+        weatherDataLoading={weatherDataLoading}
+        cloudPercentage={cloudPercentage}
+        surfacePressure={surfacePressure}
       />
     </div>
   );

@@ -4,6 +4,7 @@ export default interface weatherDataInterface {
   hourly: {
     time: string[];
     temperature_2m: number[];
+    temperature_80m: number[];
     relativehumidity_2m: number[];
     precipitation_probability: number[];
     weathercode: number[];
@@ -11,6 +12,8 @@ export default interface weatherDataInterface {
     windspeed_10m: number[];
     winddirection_10m: number[];
     uv_index: number[];
+    cloudcover: number[];
+    surface_pressure: number[];
   };
   daily: {
     time: string[];
@@ -62,12 +65,27 @@ export interface AQIProps {
   aqi: number;
 }
 
+export interface CloudCoverProps {
+  cloudPercentage: number;
+}
+
+export interface SurfacePressureProps {
+  surfacePressure: number;
+}
+
+export interface LoadingProps {
+  weatherDataLoading: boolean;
+}
+
 export type TodayHighlightProps = SunriseSunsetProps &
   UVProps &
   WindStatusProps &
   HumidityProps &
   VisibilityProps &
-  AQIProps;
+  AQIProps &
+  LoadingProps &
+  CloudCoverProps &
+  SurfacePressureProps;
 
 export type weatherCodeData = {
   desc: string;

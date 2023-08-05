@@ -6,13 +6,15 @@ const WindStatus = ({ speed, angle }: WindStatusProps) => {
       <div className=" font-quicksand text-black text-opacity-40 mb-6 ">
         Wind Status
       </div>
-      <div className="flex justify-start items-end font-quicksand text-black">
-        <div className="mr-12">
+      <div className="flex flex-col justify-start items-start gap-2 font-quicksand text-black">
+        <div className="">
           <span className=" text-7xl mr-1">{speed}</span>
           <span className="text-xl">km/h</span>
         </div>
-
-        <Compass angle={angle} />
+        <div className="flex items-center gap-3">
+          <Compass angle={angle} />
+          <span className="text-lg">{getWindDirection(angle)}</span>
+        </div>
       </div>
     </div>
   );
@@ -30,8 +32,8 @@ const Compass = ({ angle }: { angle: number }) => {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 32 32"
-        width="50"
-        height="60"
+        width="30"
+        height="30"
         fill="green"
         style={arrowStyle}
       >
@@ -41,3 +43,19 @@ const Compass = ({ angle }: { angle: number }) => {
     </div>
   );
 };
+
+function getWindDirection(angle: number): string {
+  const directions = [
+    "North",
+    "North East",
+    "East",
+    "South East",
+    "South",
+    "South West",
+    "West",
+    "North West",
+    "North",
+  ];
+  const index = Math.round(((angle %= 360) < 0 ? angle + 360 : angle) / 45);
+  return directions[index];
+}

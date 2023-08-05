@@ -8,7 +8,7 @@ const WeatherGrid = ({
   weatherCodes,
 }: WeatherCardProps) => {
   return (
-    <div className="flex flex-row gap-3 mx-auto mb-16">
+    <div className="flex flex-row gap-3 mx-auto mb-12">
       {dates.map((date, index) => (
         <WeatherCard
           key={index}

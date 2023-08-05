@@ -21,6 +21,9 @@ function App() {
     country: "",
   });
 
+  // Variables for Loading
+  const [weatherLoading, setWeatherLoading] = useState(true);
+
   // h - Hourly Variables
   const [rainChance, setRainChance] = useState(0); // Current chance of rain
   const [currTemp, setCurrTemp] = useState(0); // Current temperature
@@ -30,7 +33,9 @@ function App() {
   const [humidity, setHumidity] = useState(0); // Current Humidity
   const [visibility, setVisibility] = useState(0); // Current Visibility
   const [aqi, setAQI] = useState(0); // Current AQI
-  const [weatherCode, setWeatherCode] = useState(0);
+  const [weatherCode, setWeatherCode] = useState(0); // Current Hourly Weather Code
+  const [cloudPercentage, setCloudPercentage] = useState(0); // Current Cloud Cover
+  const [surfacePressure, setSurfacePressure] = useState(0);
 
   // d - Daily variables
   const [dTime, setDTime] = useState<string[]>([]);
@@ -55,21 +60,21 @@ function App() {
         .get(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`)
         .then((res) => {
           setAddress(res.data.address);
-          console.log(res.data.address);
         });
 
       apiClient
         .get(
-          `/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+          `/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,temperature_80m,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
         )
         .then((res) => {
-          // setWeatherData(res.data);
+          console.log(weatherLoading);
           processData(res.data, latitude, longitude);
+          setWeatherLoading(false);
         });
     }
   }
 
-  // Function that sets the new variable
+  // Function that sets the new variables from the data received
   const processData = (
     data: weatherDataIterface,
     latitude: number,
@@ -110,6 +115,8 @@ function App() {
     setHumidity(data.hourly.relativehumidity_2m[hourlyIndex]);
     setVisibility(data.hourly.visibility[hourlyIndex]);
     setWeatherCode(data.hourly.weathercode[hourlyIndex]);
+    setCloudPercentage(data.hourly.cloudcover[hourlyIndex]);
+    setSurfacePressure(data.hourly.surface_pressure[hourlyIndex]);
   };
 
   // useEffect for every minute
@@ -132,6 +139,7 @@ function App() {
       const nowHour = new Date().getHours();
       if (nowHour !== currentHour) {
         setCurrentHour(nowHour);
+        // When the hour changes, retrieve new data from the server
         setData();
       }
     }, 1000); // checks every second
@@ -172,6 +180,9 @@ function App() {
           percentage={humidity}
           distance={visibility}
           aqi={aqi}
+          weatherDataLoading={weatherLoading}
+          cloudPercentage={cloudPercentage}
+          surfacePressure={surfacePressure}
         />
       </div>
     </div>
