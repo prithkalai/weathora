@@ -21,6 +21,7 @@ function App() {
     country: "",
   });
   const [isDay, setIsDay] = useState(true);
+  const [degreeScale, setDegreeScale] = useState(1);
 
   // Variables for Loading
   const [weatherLoading, setWeatherLoading] = useState(true);
@@ -165,6 +166,11 @@ function App() {
     setData();
   }, []);
 
+  const handleDegree = (value: number) => {
+    setDegreeScale(value);
+    console.log(value);
+  };
+
   return (
     <div className="mx-auto max-w-[1650px] h-screen sm:w-full">
       <div className="flex flex-row">
@@ -181,6 +187,7 @@ function App() {
           isDay={isDay}
           weatherDataLoading={weatherLoading}
           handleOnClick={handleOnClick}
+          degreeScale={degreeScale}
         />
         <DashBoard
           dates={dTime}
@@ -198,6 +205,8 @@ function App() {
           weatherDataLoading={weatherLoading}
           cloudPercentage={cloudPercentage}
           surfacePressure={surfacePressure}
+          degreeScale={degreeScale}
+          handleDegree={handleDegree}
         />
       </div>
     </div>

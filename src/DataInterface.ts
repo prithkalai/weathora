@@ -108,6 +108,10 @@ export interface SideBarProps {
   handleOnClick: () => void;
 }
 
+export interface DegreeProps {
+  degreeScale: number;
+}
+
 // TODO: Find a way to show freezing rain/drizzle
 
 export const weatherMap: { [key: number]: weatherCodeData } = {

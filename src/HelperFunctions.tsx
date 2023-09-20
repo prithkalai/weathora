@@ -80,3 +80,9 @@ export const ShimmerList = ({
 
   return <>{shimmerItems}</>;
 };
+
+// Function to convert celsius to faranheit
+export function celsiusToFahrenheit(celsius: number) {
+  let fahrenheit = (celsius * 9) / 5 + 32;
+  return customRound(fahrenheit);
+}

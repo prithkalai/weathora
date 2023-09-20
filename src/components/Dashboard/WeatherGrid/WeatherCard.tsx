@@ -3,7 +3,8 @@ import {
   AnimatedWeatherTypes,
 } from "animated-weather-icon";
 import WeatherIcon from "../../AnimatedWeather";
-import { customRound } from "../../../HelperFunctions";
+import { celsiusToFahrenheit, customRound } from "../../../HelperFunctions";
+import { DegreeProps } from "../../../DataInterface";
 
 interface Props {
   date: string;
@@ -12,7 +13,13 @@ interface Props {
   weatherIcon: AnimatedWeatherTypes;
 }
 
-const WeatherCard = ({ date, minTemp, maxTemp, weatherIcon }: Props) => {
+const WeatherCard = ({
+  date,
+  minTemp,
+  maxTemp,
+  weatherIcon,
+  degreeScale,
+}: Props & DegreeProps) => {
   return (
     <div className="flex flex-col items-center bg-white rounded-lg h-40 w-[143px] font-quicksand pt-3 gap-3">
       <div className="text-md">{getDayFromDate(date)}</div>
@@ -23,9 +30,17 @@ const WeatherCard = ({ date, minTemp, maxTemp, weatherIcon }: Props) => {
         disableAnimations={false}
       />
       <div className="flex flex-row gap-3 ">
-        <span className=" text-black text-sm ">{customRound(maxTemp)}°</span>
+        <span className=" text-black text-sm ">
+          {degreeScale == 1
+            ? customRound(maxTemp)
+            : celsiusToFahrenheit(maxTemp)}
+          °
+        </span>
         <span className=" text-black opacity-30 text-sm ">
-          {customRound(minTemp)}°
+          {degreeScale == 1
+            ? customRound(minTemp)
+            : celsiusToFahrenheit(minTemp)}
+          °
         </span>
       </div>
     </div>

@@ -1,10 +1,20 @@
-import { TodayHighlightProps, WeatherCardProps } from "../../DataInterface";
+import {
+  DegreeProps,
+  TodayHighlightProps,
+  WeatherCardProps,
+} from "../../DataInterface";
 import NavBar from "./NavBar";
 import InfoGrid from "./TodayInfoGrid";
 import WeatherGrid from "./WeatherGrid";
 import { ShimmerList } from "../../HelperFunctions";
 
-const DashBoard: React.FC<TodayHighlightProps & WeatherCardProps> = ({
+interface Props {
+  handleDegree: (value: number) => void;
+}
+
+const DashBoard: React.FC<
+  TodayHighlightProps & WeatherCardProps & DegreeProps & Props
+> = ({
   sunriseTime,
   sunsetTime,
   dates,
@@ -20,10 +30,12 @@ const DashBoard: React.FC<TodayHighlightProps & WeatherCardProps> = ({
   weatherDataLoading,
   cloudPercentage,
   surfacePressure,
+  handleDegree,
+  degreeScale,
 }) => {
   return (
     <div className="flex flex-col w-full h-screen bg-neutral-100 pt-8 pl-12 pr-10">
-      <NavBar />
+      <NavBar handleDegree={handleDegree} degreeScale={degreeScale} />
       {weatherDataLoading ? (
         <div className="flex gap-3 mx-auto mb-12">
           <ShimmerList width={143} height={160} count={7} />
@@ -34,6 +46,7 @@ const DashBoard: React.FC<TodayHighlightProps & WeatherCardProps> = ({
           minTemps={minTemps}
           maxTemps={maxTemps}
           weatherCodes={weatherCodes}
+          degreeScale={degreeScale}
         />
       )}
 

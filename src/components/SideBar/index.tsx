@@ -1,5 +1,5 @@
-import { SideBarProps } from "../../DataInterface";
-import { getCurrentDay } from "../../HelperFunctions";
+import { DegreeProps, SideBarProps } from "../../DataInterface";
+import { celsiusToFahrenheit, getCurrentDay } from "../../HelperFunctions";
 import WeatherIcon from "../AnimatedWeather";
 import SearchBar from "./SearchBar";
 import {
@@ -19,11 +19,12 @@ const SideBar = ({
   isDay,
   weatherDataLoading,
   handleOnClick,
-}: SideBarProps) => {
+  degreeScale,
+}: SideBarProps & DegreeProps) => {
   return (
     <div
       className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10 
-    bg-white dark:bg-neutral-300"
+    bg-white"
     >
       <SearchBar handleOnClick={handleOnClick} />
       <div className="mb-4">
@@ -40,17 +41,22 @@ const SideBar = ({
           />
         )}
       </div>
-      <div className="ml-12 text-black dark:text-white font-quicksand text-8xl ">
-        {currentTemperature}°
+      <div className="ml-12 text-black  font-quicksand text-8xl ">
+        {degreeScale == 1
+          ? currentTemperature
+          : celsiusToFahrenheit(currentTemperature)}
+        °
       </div>
-      <div className="ml-12 text-neutral-500 dark:text-neutral-300 text-lg font-quicksand mb-6">
-        Feels like {apparentTemperature}°
+      <div className="ml-12 text-neutral-500  text-lg font-quicksand mb-6">
+        Feels like{" "}
+        {degreeScale == 1
+          ? apparentTemperature
+          : celsiusToFahrenheit(apparentTemperature)}
+        °
       </div>
       <div className="ml-12 h-fit font-quicksand mb-8">
-        <span className=" text-black dark:text-white text-2xl ">
-          {getCurrentDay()},
-        </span>
-        <span className="text-neutral-500 dark:text-neutral-300 text-2xl">
+        <span className=" text-black  text-2xl ">{getCurrentDay()},</span>
+        <span className="text-neutral-500  text-2xl">
           {" "}
           {time.split(":")[0]}
           <span className="blink">:</span>
@@ -67,15 +73,13 @@ const SideBar = ({
         <>
           <div className=" flex flex-row items-center gap-2">
             <WeatherIcon
-              className="w-10 h-10 ml-10 dark:text-white"
+              className="w-10 h-10 ml-10 "
               weatherTime={AnimatedWeatherTimes[isDay ? "Day" : "Night"]}
               weatherType={weathercode.icon}
               disableAnimations={false}
             />
             <div className="h-fit font-quicksand">
-              <span className=" text-black dark:text-white text-sm ">
-                {weathercode.desc}
-              </span>
+              <span className=" text-black  text-sm ">{weathercode.desc}</span>
             </div>
           </div>
           <div className="mb-8 flex flex-row items-center gap-2">
@@ -86,12 +90,8 @@ const SideBar = ({
               disableAnimations={false}
             />
             <div className="h-fit font-quicksand">
-              <span className=" text-black dark:text-white text-sm ">
-                Rain{" "}
-              </span>
-              <span className=" text-black dark:text-white text-sm ">
-                - {rainChance}%
-              </span>
+              <span className=" text-black text-sm ">Rain </span>
+              <span className=" text-black text-sm ">- {rainChance}%</span>
             </div>
           </div>
         </>
