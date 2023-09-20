@@ -20,7 +20,8 @@
     "react-icons": "^4.10.1",
     "react-semicircle-progressbar": "^1.1.0",
     "react-shimmer": "^3.2.0",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "react-toggle-dark-mode": "^1.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",

@@ -25,7 +25,7 @@ const InfoGrid: React.FC<TodayHighlightProps> = ({
   return (
     <>
       {weatherDataLoading ? (
-        <div className="grid grid-cols-4 gap-y-5 gap-x-14">
+        <div className="grid grid-cols-4 gap-y-5 gap-x-5">
           <ShimmerList width={253} height={192} count={8} />
         </div>
       ) : (
