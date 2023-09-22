@@ -11,7 +11,6 @@ import {
 } from "./HelperFunctions";
 
 function App() {
-  // const [weatherData, setWeatherData] = useState<weatherDataIterface>();
   const [time, setTime] = useState<Date>(new Date());
   const [currentHour, setCurrentHour] = useState<number>(new Date().getHours());
   const [address, setAddress] = useState<GeoCodeData>({
@@ -22,6 +21,7 @@ function App() {
   });
   const [isDay, setIsDay] = useState(true);
   const [degreeScale, setDegreeScale] = useState(1);
+  const [durationScale, setDurationScale] = useState(2);
 
   // Variables for Loading
   const [weatherLoading, setWeatherLoading] = useState(true);
@@ -39,6 +39,9 @@ function App() {
   const [cloudPercentage, setCloudPercentage] = useState(0); // Current Cloud Cover
   const [surfacePressure, setSurfacePressure] = useState(0); // Current Surface Pressure
   const [apparentTemperature, setApparentTemperature] = useState(0); // Current Apparent Temperature
+  const [hourlyWeatherCode, setHourlyWeatherCode] = useState<number[]>([]); // Array of hourly weather codes
+  const [hourlyTemp, setHourlyTemp] = useState<number[]>([]); //  Array of hourly temps in celcius
+  const [hourlyIndex, setHourlyIndex] = useState(0); // Current index from the data
 
   // d - Daily variables
   const [dTime, setDTime] = useState<string[]>([]);
@@ -114,6 +117,7 @@ function App() {
 
     // Find Hourly Index
     const hourlyIndex = findIndexOfClosestTimeBeforeNow(data.hourly.time);
+    setHourlyIndex(hourlyIndex);
 
     // Set the hourly variables
     setCurrTemp(customRound(data.hourly.temperature_2m[hourlyIndex]));
@@ -129,6 +133,8 @@ function App() {
     setApparentTemperature(
       customRound(data.hourly.apparent_temperature[hourlyIndex])
     );
+    setHourlyTemp(data.hourly.temperature_2m);
+    setHourlyWeatherCode(data.hourly.weathercode);
   };
 
   // useEffect for every minute
@@ -171,8 +177,12 @@ function App() {
     console.log(value);
   };
 
+  const handleDuration = (value: number) => {
+    setDurationScale(value);
+  };
+
   return (
-    <div className="mx-auto max-w-[1650px] h-screen sm:w-full">
+    <div className="mx-auto max-w-[1550px] w-full max-h-[1080px] h-screen ">
       <div className="flex flex-row">
         <SideBar
           rainChance={rainChance}
@@ -207,6 +217,11 @@ function App() {
           surfacePressure={surfacePressure}
           degreeScale={degreeScale}
           handleDegree={handleDegree}
+          hourlyIndex={hourlyIndex}
+          hourlyTemps={hourlyTemp}
+          hourlyWeatherCode={hourlyWeatherCode}
+          durationScale={durationScale}
+          handleDuration={handleDuration}
         />
       </div>
     </div>

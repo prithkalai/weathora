@@ -23,7 +23,7 @@ const SideBar = ({
 }: SideBarProps & DegreeProps) => {
   return (
     <div
-      className="flex flex-col items-start  border-2 border-solid w-[350px] h-screen pt-10 
+      className="flex flex-col items-start border-2 border-solid w-[350px] h-screen pt-10 pb-12
     bg-white"
     >
       <SearchBar handleOnClick={handleOnClick} />

@@ -112,6 +112,16 @@ export interface DegreeProps {
   degreeScale: number;
 }
 
+export interface DurationProps {
+  durationScale: number;
+}
+
+export interface HourlyWeatherProps {
+  hourlyTemps: number[];
+  hourlyWeatherCode: number[];
+  hourlyIndex: number;
+}
+
 // TODO: Find a way to show freezing rain/drizzle
 
 export const weatherMap: { [key: number]: weatherCodeData } = {

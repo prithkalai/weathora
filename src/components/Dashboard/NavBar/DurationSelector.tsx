@@ -1,22 +1,26 @@
-import { useState } from "react";
+import { DurationProps } from "../../../DataInterface";
 
 interface Props {
   buttonText1: string;
   buttonText2: string;
+  handleDuration: (value: number) => void;
 }
 
-const DurationSelector = ({ buttonText1, buttonText2 }: Props) => {
-  const [selectedButton, setSelectedButton] = useState(2);
-
+const DurationSelector = ({
+  buttonText1,
+  buttonText2,
+  handleDuration,
+  durationScale,
+}: Props & DurationProps) => {
   const handleButtonClick = (buttonNumber: number) => {
-    setSelectedButton(buttonNumber);
+    handleDuration(buttonNumber);
   };
 
   return (
     <div className="flex space-x-4 font-quicksand text-xl">
       <button
         className={`py-2 px-4 rounded font-semibold ${
-          selectedButton === 1
+          durationScale === 1
             ? " text-white bg-black underline"
             : " bg-gray-300 text-gray-700"
         } transition-all duration-200 `}
@@ -26,7 +30,7 @@ const DurationSelector = ({ buttonText1, buttonText2 }: Props) => {
       </button>
       <button
         className={`py-2 px-4 rounded ${
-          selectedButton === 2
+          durationScale === 2
             ? "bg-black text-white underline"
             : "bg-gray-300 text-gray-700"
         } transition-all duration-200 `}

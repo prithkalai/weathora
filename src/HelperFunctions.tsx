@@ -27,6 +27,34 @@ export function getCurrentTime(): string {
   return `${formattedHours}:${formattedMinutes} ${ampm}`;
 }
 
+// Function that generates an array of times. Length of the array is based on the 'n' value.
+export function generateTimes(n: number): string[] {
+  const times: string[] = [];
+
+  // Get current date
+  const currentDate = new Date();
+
+  // Set the minutes and seconds to 0 and add one hour to get the next full hour
+  currentDate.setHours(currentDate.getHours() + 1, 0, 0);
+
+  // Generate the array of times
+  for (let i = 0; i < n; i++) {
+    let hours = currentDate.getHours();
+    const amOrPm = hours >= 12 ? "PM" : "AM";
+
+    // Convert hour from 24-hour to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+
+    times.push(`${hours} ${amOrPm}`);
+
+    // Move to the next hour
+    currentDate.setHours(currentDate.getHours() + 1);
+  }
+
+  return times;
+}
+
 // Function the rounds numbers up or down based on the decimal point
 export function customRound(num: number): number {
   let decimalPart = num - Math.floor(num);
