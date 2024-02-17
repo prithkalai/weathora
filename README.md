@@ -20,4 +20,4 @@ Weathora is a user-centric web application designed to provide accurate, real-ti
 
 ## App Screenshot
 
-<img src="Prithvi0709/Prithvi0709/weathora.jpg" alt="Weathora" width="500"/><br />
+<img src="weathora.jpg" alt="Weathora" width="500"/><br />
