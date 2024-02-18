@@ -12,8 +12,6 @@ import WeatherDescription from "./WeatherDescription";
 
 const SideBar = ({ handleOnClick, handleOnSubmit }: SideBarProps) => {
   const weatherDataLoading = useDataStore((s) => s.weatherDataLoading);
-  const weatherData = useDataStore((s) => s.weatherData);
-  console.log(weatherData);
 
   return (
     <div

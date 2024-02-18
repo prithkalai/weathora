@@ -48,14 +48,11 @@ export function customRound(num: number): number {
 
 // Important Function
 // Finds the index of the current hour to display the relevant data for the current hour
-export function findTodayIndex(dates: string[]): number {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = ("0" + (date.getMonth() + 1)).slice(-2); // Months are 0 based, so add 1 and format to 2 digits
-  const day = ("0" + date.getDate()).slice(-2); // Format to 2 digits
+export function findTodayIndex(dates: string[], timezone: string): number {
+  // Create a moment object for today's date in the specified timezone
+  const today = moment.tz(timezone).format("YYYY-MM-DD");
 
-  const today = `${year}-${month}-${day}`;
-
+  // Find the index of today's date in the dates array
   return dates.findIndex((date) => date === today);
 }
 

@@ -47,7 +47,7 @@ function App() {
       setHourlyIndex(
         findIndexOfClosestTimeBeforeNow(res.data.hourly.time, res.data.timezone)
       );
-      setDailyIndex(findTodayIndex(res.data.daily.time));
+      setDailyIndex(findTodayIndex(res.data.daily.time, res.data.timezone));
       setWeatherData(res.data);
       setWeatherDataLoading(false);
     });
