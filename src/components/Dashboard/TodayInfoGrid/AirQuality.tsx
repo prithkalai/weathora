@@ -1,7 +1,9 @@
 import { Line } from "rc-progress";
-import { AQIProps } from "../../../DataInterface";
+import useDataStore from "../../../data/dataStore";
 
-const AirQuality = ({ aqi }: AQIProps) => {
+const AirQuality = () => {
+  const aqi = useDataStore((s) => s.aqi);
+
   let strokeColor: string = "";
   let description: string = "";
 

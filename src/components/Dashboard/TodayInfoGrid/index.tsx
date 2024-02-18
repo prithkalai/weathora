@@ -1,27 +1,16 @@
-import { TodayHighlightProps } from "../../../DataInterface";
+import { ShimmerList } from "../../../HelperFunctions";
+import useDataStore from "../../../data/dataStore";
 import AirQuality from "./AirQuality";
+import CloudCover from "./CloudCover";
 import Humidity from "./Humidity";
 import SunriseSunset from "./SunriseSunset";
+import SurfacePressure from "./SurfacePressure";
 import UVIndex from "./UVIndex";
 import Visibility from "./Visibility";
 import WindStatus from "./WindStatus";
-import CloudCover from "./CloudCover";
-import SurfacePressure from "./SurfacePressure";
-import { ShimmerList } from "../../../HelperFunctions";
 
-const InfoGrid: React.FC<TodayHighlightProps> = ({
-  sunriseTime,
-  sunsetTime,
-  value,
-  speed,
-  angle,
-  percentage,
-  distance,
-  aqi,
-  weatherDataLoading,
-  cloudPercentage,
-  surfacePressure,
-}) => {
+const InfoGrid = () => {
+  const weatherDataLoading = useDataStore((s) => s.weatherDataLoading);
   return (
     <>
       {weatherDataLoading ? (
@@ -30,14 +19,14 @@ const InfoGrid: React.FC<TodayHighlightProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-4 gap-y-5 gap-x-5 ">
-          <UVIndex value={value} />
-          <AirQuality aqi={aqi} />
-          <WindStatus angle={angle} speed={speed} />
-          <SunriseSunset sunriseTime={sunriseTime} sunsetTime={sunsetTime} />
-          <Humidity percentage={percentage} />
-          <Visibility distance={distance} />
-          <CloudCover cloudPercentage={cloudPercentage} />
-          <SurfacePressure surfacePressure={surfacePressure} />
+          <UVIndex />
+          <AirQuality />
+          <WindStatus />
+          <SunriseSunset />
+          <Humidity />
+          <Visibility />
+          <CloudCover />
+          <SurfacePressure />
         </div>
       )}
     </>

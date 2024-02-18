@@ -1,42 +1,28 @@
-import { DegreeProps } from "../../../DataInterface";
+import useDataStore from "../../../data/dataStore";
 
-interface Props {
-  buttonText1: string;
-  buttonText2: string;
-  handleDegree: (value: number) => void;
-}
-
-const DegreeSelector = ({
-  buttonText1,
-  buttonText2,
-  degreeScale,
-  handleDegree,
-}: DegreeProps & Props) => {
-  const handleButtonClick = (buttonNumber: number) => {
-    handleDegree(buttonNumber);
-  };
+const DegreeSelector = () => {
+  const { units, setUnits } = useDataStore((s) => ({
+    units: s.units,
+    setUnits: s.setUnits,
+  }));
 
   return (
     <div className="flex space-x-2 font-quicksand text-lg font-bold">
       <button
         className={`py-2 px-3 rounded-full ${
-          degreeScale === 1
-            ? " text-white bg-black"
-            : " bg-gray-300 text-gray-700"
+          units === "C" ? " text-white bg-black" : " bg-gray-300 text-gray-700"
         } transition-all duration-200 `}
-        onClick={() => handleButtonClick(1)}
+        onClick={() => setUnits("C")}
       >
-        {buttonText1}
+        C°
       </button>
       <button
         className={`py-2 px-3 rounded-full ${
-          degreeScale === 2
-            ? "bg-black text-white"
-            : "bg-gray-300 text-gray-700"
+          units === "F" ? "bg-black text-white" : "bg-gray-300 text-gray-700"
         } transition-all duration-200 `}
-        onClick={() => handleButtonClick(2)}
+        onClick={() => setUnits("F")}
       >
-        {buttonText2}
+        F°
       </button>
     </div>
   );

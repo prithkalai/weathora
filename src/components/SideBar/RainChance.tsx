@@ -2,13 +2,14 @@ import {
   AnimatedWeatherTimes,
   AnimatedWeatherTypes,
 } from "animated-weather-icon";
+import useDataStore from "../../data/dataStore";
 import WeatherIcon from "../AnimatedWeather";
 
-interface Props {
-  rainChance: number;
-}
+const RainChance = () => {
+  const rainChance = useDataStore(
+    (s) => s.weatherData.hourly.precipitation_probability[s.hourlyIndex]
+  );
 
-const RainChance = ({ rainChance }: Props) => {
   return (
     <div className="mb-8 flex flex-row items-center gap-2">
       <WeatherIcon

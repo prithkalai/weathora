@@ -1,42 +1,32 @@
-import { DurationProps } from "../../../DataInterface";
+import useDataStore from "../../../data/dataStore";
 
-interface Props {
-  buttonText1: string;
-  buttonText2: string;
-  handleDuration: (value: number) => void;
-}
-
-const DurationSelector = ({
-  buttonText1,
-  buttonText2,
-  handleDuration,
-  durationScale,
-}: Props & DurationProps) => {
-  const handleButtonClick = (buttonNumber: number) => {
-    handleDuration(buttonNumber);
-  };
+const DurationSelector = () => {
+  const { duration, setDuration } = useDataStore((s) => ({
+    duration: s.duration,
+    setDuration: s.setDuration,
+  }));
 
   return (
     <div className="flex space-x-4 font-quicksand text-xl">
       <button
         className={`py-2 px-4 rounded font-semibold ${
-          durationScale === 1
+          duration === "Today"
             ? " text-white bg-black underline"
             : " bg-gray-300 text-gray-700"
         } transition-all duration-200 `}
-        onClick={() => handleButtonClick(1)}
+        onClick={() => setDuration("Today")}
       >
-        {buttonText1}
+        Today
       </button>
       <button
         className={`py-2 px-4 rounded ${
-          durationScale === 2
+          duration === "Week"
             ? "bg-black text-white underline"
             : "bg-gray-300 text-gray-700"
         } transition-all duration-200 `}
-        onClick={() => handleButtonClick(2)}
+        onClick={() => setDuration("Week")}
       >
-        {buttonText2}
+        Week
       </button>
     </div>
   );

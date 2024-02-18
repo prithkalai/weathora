@@ -1,17 +1,17 @@
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
-
-interface ClockProps {
-  timezone: string;
-  weatherDataLoading: boolean;
-}
+import useDataStore from "../../data/dataStore";
 
 // Function that returns the current day
 function getCurrentDay(timezone: string): string {
   return moment.tz(timezone).format("dddd");
 }
 
-const DateAndTime = ({ timezone, weatherDataLoading }: ClockProps) => {
+const DateAndTime = () => {
+  const { weatherDataLoading, timezone } = useDataStore((s) => ({
+    weatherDataLoading: s.weatherDataLoading,
+    timezone: s.weatherData.timezone,
+  }));
   // Initialize time with the current time in the specified timezone
   const [time, setTime] = useState(moment.tz(timezone).format("hh:mm A"));
 

@@ -1,6 +1,11 @@
-import { WindStatusProps } from "../../../DataInterface";
+import useDataStore from "../../../data/dataStore";
 
-const WindStatus = ({ speed, angle }: WindStatusProps) => {
+const WindStatus = () => {
+  const { speed, angle } = useDataStore((s) => ({
+    speed: s.weatherData.hourly.windspeed_10m[s.hourlyIndex],
+    angle: s.weatherData.hourly.winddirection_10m[s.hourlyIndex],
+  }));
+
   return (
     <div className="flex flex-col w-full h-48 rounded-2xl bg-white pt-4 pl-6">
       <div className=" font-quicksand text-black text-opacity-40 mb-6 ">

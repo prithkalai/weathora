@@ -1,7 +1,11 @@
 import { Line } from "rc-progress";
-import { HumidityProps } from "../../../DataInterface";
+import useDataStore from "../../../data/dataStore";
 
-const Humidity = ({ percentage }: HumidityProps) => {
+const Humidity = () => {
+  const percentage = useDataStore(
+    (s) => s.weatherData.hourly.relativehumidity_2m[s.hourlyIndex]
+  );
+
   let strokeColor: string = "";
   let description: string = "";
 

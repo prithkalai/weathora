@@ -1,8 +1,10 @@
-interface Props {
-  cloudPercentage: number;
-}
+import useDataStore from "../../../data/dataStore";
 
-const CloudCover = ({ cloudPercentage }: Props) => {
+const CloudCover = () => {
+  const cloudPercentage = useDataStore(
+    (s) => s.weatherData.hourly.cloudcover[s.hourlyIndex]
+  );
+
   return (
     <div className="flex flex-col w-full h-48 rounded-2xl bg-white pt-4 ">
       <div className=" font-quicksand text-black text-opacity-40 pl-6">

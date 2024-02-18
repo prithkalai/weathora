@@ -2,22 +2,18 @@ import {
   AnimatedWeatherTimes,
   AnimatedWeatherTypes,
 } from "animated-weather-icon";
-import WeatherIcon from "../../AnimatedWeather";
 import { celsiusToFahrenheit, customRound } from "../../../HelperFunctions";
-import { DegreeProps } from "../../../DataInterface";
+import { Units } from "../../../data/dataStore";
+import WeatherIcon from "../../AnimatedWeather";
 
 interface Props {
   time: string;
   temp: number;
   weatherIcon: AnimatedWeatherTypes;
+  units: Units;
 }
 
-const HourlyWeatherCard = ({
-  time,
-  temp,
-  weatherIcon,
-  degreeScale,
-}: DegreeProps & Props) => {
+const HourlyWeatherCard = ({ time, temp, weatherIcon, units }: Props) => {
   return (
     <div className="flex flex-col items-center bg-white rounded-lg h-40 w-[143px] font-quicksand pt-3 gap-3 pl-3 pr-3">
       <div className="text-sm">{time}</div>
@@ -28,7 +24,7 @@ const HourlyWeatherCard = ({
         disableAnimations={false}
       />
       <span className=" text-black text-sm ">
-        {degreeScale == 1 ? customRound(temp) : celsiusToFahrenheit(temp)}°
+        {units == "C" ? customRound(temp) : celsiusToFahrenheit(temp)}°
       </span>
     </div>
   );

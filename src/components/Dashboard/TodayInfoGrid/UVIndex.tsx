@@ -1,20 +1,24 @@
 import { SemiCircleProgress } from "react-semicircle-progressbar";
+import useDataStore from "../../../data/dataStore";
 
 interface Props {
-  value: number;
   maxValue?: number;
 }
 
-const UVIndex = ({ value, maxValue = 13 }: Props) => {
+const UVIndex = ({ maxValue = 13 }: Props) => {
   let strokeColor: string = "";
 
-  if (value <= 2) {
+  const uvIndex = useDataStore(
+    (s) => s.weatherData.hourly.uv_index[s.hourlyIndex]
+  );
+
+  if (uvIndex <= 2) {
     strokeColor = "#00d700";
-  } else if (value > 2 && value <= 5) {
+  } else if (uvIndex > 2 && uvIndex <= 5) {
     strokeColor = "#ffed54";
-  } else if (value > 5 && value <= 7) {
+  } else if (uvIndex > 5 && uvIndex <= 7) {
     strokeColor = "#ffad00";
-  } else if (value > 7 && value <= 10) {
+  } else if (uvIndex > 7 && uvIndex <= 10) {
     strokeColor = "#ff0000";
   } else strokeColor = "#942192";
 
@@ -26,7 +30,7 @@ const UVIndex = ({ value, maxValue = 13 }: Props) => {
       <div className="relative">
         <div className="flex flex-col items-center ">
           <SemiCircleProgress
-            percentage={Math.ceil((value / maxValue) * 100)}
+            percentage={Math.ceil((uvIndex / maxValue) * 100)}
             size={{ width: 300, height: 170 }}
             strokeWidth={10}
             strokeColor={strokeColor}
@@ -37,7 +41,7 @@ const UVIndex = ({ value, maxValue = 13 }: Props) => {
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-white w-12 h-16 flex items-end justify-center text-5xl font-quicksand">
-            {value}
+            {uvIndex}
           </div>
         </div>
       </div>

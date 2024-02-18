@@ -1,13 +1,15 @@
 import { AnimatedWeatherTimes } from "animated-weather-icon";
+import { weatherMap } from "../../data/DataInterface";
+import useDataStore from "../../data/dataStore";
 import WeatherIcon from "../AnimatedWeather";
-import { weatherCodeData } from "../../DataInterface";
 
-interface Props {
-  isDay: boolean;
-  weathercode: weatherCodeData;
-}
+const WeatherDescription = () => {
+  const { weathercode, isDay } = useDataStore((s) => ({
+    weatherDataLoading: s.weatherDataLoading,
+    weathercode: weatherMap[s.weatherData.hourly.weathercode[s.hourlyIndex]],
+    isDay: s.weatherData.current_weather.is_day,
+  }));
 
-const WeatherDescription = ({ isDay, weathercode }: Props) => {
   return (
     <div className=" flex flex-row items-center gap-2">
       <WeatherIcon

@@ -1,24 +1,25 @@
-import { celsiusToFahrenheit } from "../../HelperFunctions";
+import { celsiusToFahrenheit, customRound } from "../../HelperFunctions";
+import useDataStore from "../../data/dataStore";
 
-interface TempProps {
-  weatherDataLoading: boolean;
-  degreeScale: number;
-  currentTemperature: number;
-  apparentTemperature: number;
-}
+const Temperature = () => {
+  const { weatherDataLoading, currentTemperature, apparentTemperature, units } =
+    useDataStore((s) => ({
+      weatherDataLoading: s.weatherDataLoading,
+      currentTemperature: customRound(
+        s.weatherData.hourly.temperature_2m[s.hourlyIndex]
+      ),
+      apparentTemperature: customRound(
+        s.weatherData.hourly.apparent_temperature[s.hourlyIndex]
+      ),
+      units: s.units,
+    }));
 
-const Temperature = ({
-  weatherDataLoading,
-  degreeScale,
-  currentTemperature,
-  apparentTemperature,
-}: TempProps) => {
   return (
     <>
       <div className="ml-12 text-black  font-quicksand text-8xl ">
         {weatherDataLoading
           ? 0
-          : degreeScale == 1
+          : units == "C"
           ? currentTemperature
           : celsiusToFahrenheit(currentTemperature)}
         °
@@ -27,7 +28,7 @@ const Temperature = ({
         Feels like{" "}
         {weatherDataLoading
           ? 0
-          : degreeScale == 1
+          : units == "C"
           ? apparentTemperature
           : celsiusToFahrenheit(apparentTemperature)}
         °

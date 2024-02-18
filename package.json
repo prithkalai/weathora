@@ -22,7 +22,8 @@
     "react-semicircle-progressbar": "^1.1.0",
     "react-shimmer": "^3.2.0",
     "react-spinners": "^0.13.8",
-    "react-toggle-dark-mode": "^1.1.1"
+    "react-toggle-dark-mode": "^1.1.1",
+    "zustand": "^4.5.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",

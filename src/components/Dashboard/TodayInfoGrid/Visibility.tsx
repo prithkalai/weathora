@@ -1,6 +1,9 @@
-import { VisibilityProps } from "../../../DataInterface";
+import useDataStore from "../../../data/dataStore";
 
-const Visibility = ({ distance }: VisibilityProps) => {
+const Visibility = () => {
+  const distance = useDataStore(
+    (s) => s.weatherData.hourly.visibility[s.hourlyIndex]
+  );
   return (
     <div className="flex flex-col w-full h-48 rounded-2xl bg-white pt-4 pl-6">
       <div className=" font-quicksand text-black text-opacity-40 mb-6 ">

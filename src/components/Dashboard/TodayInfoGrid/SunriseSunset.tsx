@@ -1,6 +1,12 @@
-import { SunriseSunsetProps } from "../../../DataInterface";
+import useDataStore from "../../../data/dataStore";
 
-const SunriseSunset = ({ sunriseTime, sunsetTime }: SunriseSunsetProps) => {
+const SunriseSunset = () => {
+  // FIXME: NAN numbers for certain countries
+  const { sunriseTime, sunsetTime } = useDataStore((s) => ({
+    sunriseTime: s.weatherData.daily.sunrise[s.dailyIndex],
+    sunsetTime: s.weatherData.daily.sunset[s.dailyIndex],
+  }));
+
   return (
     <div className="flex flex-col gap-4 w-full h-48 rounded-2xl bg-white pt-4 pl-6">
       <div className=" font-quicksand text-black text-opacity-40 ">

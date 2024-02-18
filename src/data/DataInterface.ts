@@ -37,92 +37,15 @@ export interface GeoCodeData {
   country: string;
 }
 
-export interface WeatherCardProps {
-  dates: string[];
-  minTemps: number[];
-  maxTemps: number[];
-  weatherCodes: number[];
-}
-
-export interface SunriseSunsetProps {
-  sunriseTime: string;
-  sunsetTime: string;
-}
-
-export interface UVProps {
-  value: number;
-}
-
-export interface WindStatusProps {
-  speed: number;
-  angle: number;
-}
-
-export interface HumidityProps {
-  percentage: number;
-}
-
-export interface VisibilityProps {
-  distance: number;
-}
-
-export interface AQIProps {
-  aqi: number;
-}
-
-export interface CloudCoverProps {
-  cloudPercentage: number;
-}
-
-export interface SurfacePressureProps {
-  surfacePressure: number;
-}
-
-export interface LoadingProps {
-  weatherDataLoading: boolean;
-}
-
-export type TodayHighlightProps = SunriseSunsetProps &
-  UVProps &
-  WindStatusProps &
-  HumidityProps &
-  VisibilityProps &
-  AQIProps &
-  LoadingProps &
-  CloudCoverProps &
-  SurfacePressureProps;
-
-export type weatherCodeData = {
-  desc: string;
-  icon: AnimatedWeatherTypes;
-};
-
 export interface SideBarProps {
-  rainChance: number;
-  currentTemperature: number;
-  weathercode: weatherCodeData;
-  apparentTemperature: number;
-  timezone: string;
-  address: GeoCodeData;
-  isDay: boolean;
-  weatherDataLoading: boolean;
   handleOnClick: () => void;
   handleOnSubmit: (address: string) => void;
 }
 
-export interface DegreeProps {
-  degreeScale: number;
-}
-
-export interface DurationProps {
-  durationScale: number;
-}
-
-export interface HourlyWeatherProps {
-  hourlyTemps: number[];
-  hourlyWeatherCode: number[];
-  hourlyIndex: number;
-}
+type weatherCodeData = {
+  desc: string;
+  icon: AnimatedWeatherTypes;
+};
 
 // TODO: Find a way to show freezing rain/drizzle
 

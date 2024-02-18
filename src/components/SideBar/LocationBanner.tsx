@@ -1,10 +1,7 @@
-import { GeoCodeData } from "../../DataInterface";
+import useDataStore from "../../data/dataStore";
 
-interface Props {
-  address: GeoCodeData;
-}
-
-const LocationBanner = ({ address }: Props) => {
+const LocationBanner = () => {
+  const address = useDataStore((s) => s.address);
   return (
     <div className="relative w-3/4 h-24 ml-8 rounded-2xl">
       <img
