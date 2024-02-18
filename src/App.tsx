@@ -11,7 +11,7 @@ import {
 } from "./HelperFunctions";
 
 function App() {
-  const [time, setTime] = useState<Date>(new Date());
+  const [timezone, setTimezone] = useState("");
   const [currentHour, setCurrentHour] = useState<number>(new Date().getHours());
   const [address, setAddress] = useState<GeoCodeData>({
     city: "",
@@ -51,43 +51,65 @@ function App() {
   const [sunset, setSunset] = useState("");
   const [dweatherCodes, setDWeatherCodes] = useState<number[]>([]);
 
+  function getCurrWeather(latitude: number, longitude: number) {
+    // Retrieves Location Data to view
+    setTimeout(() => {
+      axios
+        .get(
+          `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=65d160713f885247351708uzs351dbe`
+        )
+        .then((res) => {
+          setAddress(res.data.address);
+          apiClient
+            .get(
+              `/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,temperature_80m,apparent_temperature,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+            )
+            .then((res) => {
+              console.log(res.data);
+
+              setRetrievedWeatherData(res.data, latitude, longitude);
+              setWeatherLoading(false);
+            });
+        });
+    }, 1500);
+  }
+
   // Function that is called on first loading
   function setData() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success);
+      navigator.geolocation.getCurrentPosition((res) =>
+        getCurrWeather(res.coords.latitude, res.coords.longitude)
+      );
     } else {
       console.log("Geolocation not supported");
     }
+  }
 
-    function success(position: GeolocationPosition) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+  // Function that handles when a location is searched.
+  function handleSearch(address: string) {
+    setWeatherLoading(true);
+    axios
+      .get(
+        `https://geocode.maps.co/search?q=${address}&api_key=65d160713f885247351708uzs351dbe`
+      )
+      .then((res) => {
+        console.log(res.data);
 
-      axios
-        .get(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`)
-        .then((res) => {
-          setAddress(res.data.address);
-        });
-
-      apiClient
-        .get(
-          `/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,temperature_80m,apparent_temperature,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
-        )
-        .then((res) => {
-          processData(res.data, latitude, longitude);
-          setWeatherLoading(false);
-        });
-    }
+        getCurrWeather(
+          parseFloat(res.data[0].lat),
+          parseFloat(res.data[0].lon)
+        );
+      });
   }
 
   // Function that handles when the location button is clicked
-  function handleOnClick() {
+  function handleCurrLocationClick() {
     setWeatherLoading(true);
     setData();
   }
 
   // Function that sets the new variables from the data received
-  const processData = (
+  const setRetrievedWeatherData = (
     data: weatherDataIterface,
     latitude: number,
     longitude: number
@@ -98,9 +120,14 @@ function App() {
         `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&hourly=us_aqi&timezone=auto`
       )
       .then((res) => {
-        const aqiIndex = findIndexOfClosestTimeBeforeNow(res.data.hourly.time);
+        const aqiIndex = findIndexOfClosestTimeBeforeNow(
+          res.data.hourly.time,
+          data.timezone
+        );
         setAQI(res.data.hourly.us_aqi[aqiIndex]);
       });
+
+    setTimezone(data.timezone);
 
     // Set Variables for the daily weather cards
     setDTime(data.daily.time);
@@ -116,40 +143,31 @@ function App() {
     setIsDay(data.current_weather.is_day);
 
     // Find Hourly Index
-    const hourlyIndex = findIndexOfClosestTimeBeforeNow(data.hourly.time);
-    setHourlyIndex(hourlyIndex);
+    const currIndex = findIndexOfClosestTimeBeforeNow(
+      data.hourly.time,
+      data.timezone
+    );
+    console.log(currIndex);
+
+    setHourlyIndex(currIndex);
 
     // Set the hourly variables
-    setCurrTemp(customRound(data.hourly.temperature_2m[hourlyIndex]));
-    setRainChance(data.hourly.precipitation_probability[hourlyIndex]);
-    setCurrUV(data.hourly.uv_index[hourlyIndex]);
-    setWindSpeed(data.hourly.windspeed_10m[hourlyIndex]);
-    setWindDirection(data.hourly.winddirection_10m[hourlyIndex]);
-    setHumidity(data.hourly.relativehumidity_2m[hourlyIndex]);
-    setVisibility(data.hourly.visibility[hourlyIndex]);
-    setWeatherCode(data.hourly.weathercode[hourlyIndex]);
-    setCloudPercentage(data.hourly.cloudcover[hourlyIndex]);
-    setSurfacePressure(data.hourly.surface_pressure[hourlyIndex]);
+    setCurrTemp(customRound(data.hourly.temperature_2m[currIndex]));
+    setRainChance(data.hourly.precipitation_probability[currIndex]);
+    setCurrUV(data.hourly.uv_index[currIndex]);
+    setWindSpeed(data.hourly.windspeed_10m[currIndex]);
+    setWindDirection(data.hourly.winddirection_10m[currIndex]);
+    setHumidity(data.hourly.relativehumidity_2m[currIndex]);
+    setVisibility(data.hourly.visibility[currIndex]);
+    setWeatherCode(data.hourly.weathercode[currIndex]);
+    setCloudPercentage(data.hourly.cloudcover[currIndex]);
+    setSurfacePressure(data.hourly.surface_pressure[currIndex]);
     setApparentTemperature(
-      customRound(data.hourly.apparent_temperature[hourlyIndex])
+      customRound(data.hourly.apparent_temperature[currIndex])
     );
     setHourlyTemp(data.hourly.temperature_2m);
     setHourlyWeatherCode(data.hourly.weathercode);
   };
-
-  // useEffect for every minute
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      const now = new Date();
-      if (now.getMinutes() !== time.getMinutes()) {
-        setTime(now);
-      }
-    }, 1000); // Checks every second
-
-    return () => {
-      clearInterval(timerId);
-    };
-  }, [time]);
 
   // useEffect for every hour
   useEffect(() => {
@@ -181,6 +199,8 @@ function App() {
     setDurationScale(value);
   };
 
+  console.log(weatherCode);
+
   return (
     <div className="mx-auto max-w-[1550px] w-full max-h-[1080px] h-screen ">
       <div className="flex flex-row">
@@ -189,14 +209,12 @@ function App() {
           currentTemperature={currTemp}
           apparentTemperature={apparentTemperature}
           weathercode={weatherMap[weatherCode]}
-          time={time.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          timezone={timezone}
           address={address}
           isDay={isDay}
           weatherDataLoading={weatherLoading}
-          handleOnClick={handleOnClick}
+          handleOnClick={handleCurrLocationClick}
+          handleOnSubmit={handleSearch}
           degreeScale={degreeScale}
         />
         <DashBoard

@@ -1,24 +1,26 @@
-import { DegreeProps, SideBarProps } from "../../DataInterface";
-import { celsiusToFahrenheit, getCurrentDay } from "../../HelperFunctions";
-import WeatherIcon from "../AnimatedWeather";
-import SearchBar from "./SearchBar";
 import {
   AnimatedWeatherTimes,
   AnimatedWeatherTypes,
 } from "animated-weather-icon";
-import "../../App.css";
 import { SyncLoader } from "react-spinners";
+import "../../App.css";
+import { DegreeProps, SideBarProps } from "../../DataInterface";
+import WeatherIcon from "../AnimatedWeather";
+import DateAndTime from "./DateAndTime";
+import SearchBar from "./SearchBar";
+import Temperature from "./Temperature";
 
 const SideBar = ({
   rainChance,
   currentTemperature,
   weathercode,
-  time,
+  timezone,
   address,
   apparentTemperature,
   isDay,
   weatherDataLoading,
   handleOnClick,
+  handleOnSubmit,
   degreeScale,
 }: SideBarProps & DegreeProps) => {
   return (
@@ -26,7 +28,10 @@ const SideBar = ({
       className="flex flex-col items-start border-2 border-solid w-[350px] h-screen pt-10 pb-12
     bg-white"
     >
-      <SearchBar handleOnClick={handleOnClick} />
+      <SearchBar
+        handleOnClick={handleOnClick}
+        handleOnSubmit={handleOnSubmit}
+      />
       <div className="mb-4">
         {weatherDataLoading ? (
           <div className="flex justify-center items-center w-80 h-72 mr-10">
@@ -41,28 +46,18 @@ const SideBar = ({
           />
         )}
       </div>
-      <div className="ml-12 text-black  font-quicksand text-8xl ">
-        {degreeScale == 1
-          ? currentTemperature
-          : celsiusToFahrenheit(currentTemperature)}
-        °
-      </div>
-      <div className="ml-12 text-neutral-500  text-lg font-quicksand mb-6">
-        Feels like{" "}
-        {degreeScale == 1
-          ? apparentTemperature
-          : celsiusToFahrenheit(apparentTemperature)}
-        °
-      </div>
-      <div className="ml-12 h-fit font-quicksand mb-8">
-        <span className=" text-black  text-2xl ">{getCurrentDay()},</span>
-        <span className="text-neutral-500  text-2xl">
-          {" "}
-          {time.split(":")[0]}
-          <span className="blink">:</span>
-          {time.split(":")[1]}
-        </span>
-      </div>
+      <Temperature
+        weatherDataLoading={weatherDataLoading}
+        currentTemperature={currentTemperature}
+        apparentTemperature={apparentTemperature}
+        degreeScale={degreeScale}
+      />
+
+      <DateAndTime
+        timezone={timezone}
+        weatherDataLoading={weatherDataLoading}
+      />
+
       <div className="border-b-2 ml-8 mb-4 border-neutral-200 w-3/4"></div>
 
       {weatherDataLoading ? (

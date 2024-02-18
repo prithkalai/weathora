@@ -1,20 +1,5 @@
+import moment from "moment-timezone";
 import { Shimmer } from "react-shimmer";
-
-// Function that returns the current day
-export function getCurrentDay(): string {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const now = new Date();
-  const dayIndex = now.getDay(); // getDay returns a number between 0 (Sunday) and 6 (Saturday)
-  return days[dayIndex];
-}
 
 // Function that returns the current time
 export function getCurrentTime(): string {
@@ -74,15 +59,19 @@ export function findTodayIndex(dates: string[]): number {
   return dates.findIndex((date) => date === today);
 }
 
-// Function that finds the closes index before the current time
-export function findIndexOfClosestTimeBeforeNow(timeArray: string[]): number {
-  const now = new Date();
+export function findIndexOfClosestTimeBeforeNow(
+  timeArray: string[],
+  timezone: string
+): number {
+  // Get the current time in the specified timezone
+  const now = moment.tz(timezone);
 
   let closestTimeIndex = -1;
 
   timeArray.forEach((time, index) => {
-    const timeDate = new Date(time);
-    if (timeDate.getTime() <= now.getTime()) {
+    // Parse the time string in the specified timezone
+    const timeMoment = moment.tz(time, timezone);
+    if (timeMoment.isSameOrBefore(now)) {
       closestTimeIndex = index;
     }
   });

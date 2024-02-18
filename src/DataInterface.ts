@@ -1,6 +1,7 @@
 import { AnimatedWeatherTypes } from "animated-weather-icon";
 
 export default interface weatherDataInterface {
+  timezone: string;
   hourly: {
     time: string[];
     temperature_2m: number[];
@@ -101,11 +102,12 @@ export interface SideBarProps {
   currentTemperature: number;
   weathercode: weatherCodeData;
   apparentTemperature: number;
-  time: string;
+  timezone: string;
   address: GeoCodeData;
   isDay: boolean;
   weatherDataLoading: boolean;
   handleOnClick: () => void;
+  handleOnSubmit: (address: string) => void;
 }
 
 export interface DegreeProps {
