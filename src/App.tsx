@@ -10,6 +10,9 @@ import {
   findTodayIndex,
 } from "./HelperFunctions";
 
+// TODO: Extract all the api calls into an APIClient class.
+// TODO: Store all the state variables in a zustand store.
+
 function App() {
   const [timezone, setTimezone] = useState("");
   const [currentHour, setCurrentHour] = useState<number>(new Date().getHours());
@@ -51,6 +54,7 @@ function App() {
   const [sunset, setSunset] = useState("");
   const [dweatherCodes, setDWeatherCodes] = useState<number[]>([]);
 
+  // Function the retrieves current weather data
   function getCurrWeather(latitude: number, longitude: number) {
     // Retrieves Location Data to view
     setTimeout(() => {
@@ -74,8 +78,8 @@ function App() {
     }, 1500);
   }
 
-  // Function that is called on first loading
-  function setData() {
+  // Function that initializes Weather Data
+  function initializeWeatherData() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((res) =>
         getCurrWeather(res.coords.latitude, res.coords.longitude)
@@ -85,7 +89,7 @@ function App() {
     }
   }
 
-  // Function that handles when a location is searched.
+  // Function that handles for when a location is searched.
   function handleSearch(address: string) {
     setWeatherLoading(true);
     axios
@@ -105,7 +109,7 @@ function App() {
   // Function that handles when the location button is clicked
   function handleCurrLocationClick() {
     setWeatherLoading(true);
-    setData();
+    initializeWeatherData();
   }
 
   // Function that sets the new variables from the data received
@@ -169,14 +173,14 @@ function App() {
     setHourlyWeatherCode(data.hourly.weathercode);
   };
 
-  // useEffect for every hour
+  // useEffect to retrieve relevant data every hour
   useEffect(() => {
     const hourCheckIntervalId = setInterval(() => {
       const nowHour = new Date().getHours();
       if (nowHour !== currentHour) {
         setCurrentHour(nowHour);
         // When the hour changes, retrieve new data from the server
-        setData();
+        initializeWeatherData();
       }
     }, 1000); // checks every second
 
@@ -187,19 +191,18 @@ function App() {
 
   // UseEffect for first API call
   useEffect(() => {
-    setData();
+    initializeWeatherData();
   }, []);
 
+  // Toggle between Celsius and Faranheit
   const handleDegree = (value: number) => {
     setDegreeScale(value);
-    console.log(value);
   };
 
+  // Toggle between Today , Week
   const handleDuration = (value: number) => {
     setDurationScale(value);
   };
-
-  console.log(weatherCode);
 
   return (
     <div className="mx-auto max-w-[1550px] w-full max-h-[1080px] h-screen ">
