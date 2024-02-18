@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import DashBoard from "./components/Dashboard";
-import SideBar from "./components/SideBar";
-import apiClient from "./services/apiClient";
 import weatherDataIterface, { GeoCodeData, weatherMap } from "./DataInterface";
-import axios from "axios";
 import {
   customRound,
   findIndexOfClosestTimeBeforeNow,
   findTodayIndex,
 } from "./HelperFunctions";
+import DashBoard from "./components/Dashboard";
+import SideBar from "./components/SideBar";
+import apiClient from "./services/apiClient";
 
-// TODO: Extract all the api calls into an APIClient class.
+// TODO: Error Handling for all API calls
 // TODO: Store all the state variables in a zustand store.
 
 function App() {
@@ -58,24 +57,18 @@ function App() {
   function getCurrWeather(latitude: number, longitude: number) {
     // Retrieves Location Data to view
     setTimeout(() => {
-      axios
-        .get(
-          `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=65d160713f885247351708uzs351dbe`
-        )
-        .then((res) => {
-          setAddress(res.data.address);
-          apiClient
-            .get(
-              `/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,temperature_80m,apparent_temperature,surface_pressure,cloudcover,relativehumidity_2m,precipitation_probability,weathercode,visibility,windspeed_10m,winddirection_10m,uv_index&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
-            )
-            .then((res) => {
-              console.log(res.data);
+      // Timeout to prevent successive server requests
+      apiClient.getLocation(latitude, longitude).then((res) => {
+        setAddress(res.data.address);
+      });
+    }, 1000);
 
-              setRetrievedWeatherData(res.data, latitude, longitude);
-              setWeatherLoading(false);
-            });
-        });
-    }, 1500);
+    // Retrieve current weather forecast info
+    apiClient.getWeatherForecast(latitude, longitude).then((res) => {
+      console.log(res.data);
+      setRetrievedWeatherData(res.data, latitude, longitude);
+      setWeatherLoading(false);
+    });
   }
 
   // Function that initializes Weather Data
@@ -92,18 +85,11 @@ function App() {
   // Function that handles for when a location is searched.
   function handleSearch(address: string) {
     setWeatherLoading(true);
-    axios
-      .get(
-        `https://geocode.maps.co/search?q=${address}&api_key=65d160713f885247351708uzs351dbe`
-      )
-      .then((res) => {
-        console.log(res.data);
+    apiClient.getCoordinates(address).then((res) => {
+      console.log(res.data);
 
-        getCurrWeather(
-          parseFloat(res.data[0].lat),
-          parseFloat(res.data[0].lon)
-        );
-      });
+      getCurrWeather(parseFloat(res.data[0].lat), parseFloat(res.data[0].lon));
+    });
   }
 
   // Function that handles when the location button is clicked
@@ -119,17 +105,13 @@ function App() {
     longitude: number
   ) => {
     // Get Air Quality data
-    axios
-      .get(
-        `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${latitude}&longitude=${longitude}&hourly=us_aqi&timezone=auto`
-      )
-      .then((res) => {
-        const aqiIndex = findIndexOfClosestTimeBeforeNow(
-          res.data.hourly.time,
-          data.timezone
-        );
-        setAQI(res.data.hourly.us_aqi[aqiIndex]);
-      });
+    apiClient.getAirQuality(latitude, longitude).then((res) => {
+      const aqiIndex = findIndexOfClosestTimeBeforeNow(
+        res.data.hourly.time,
+        data.timezone
+      );
+      setAQI(res.data.hourly.us_aqi[aqiIndex]);
+    });
 
     setTimezone(data.timezone);
 
@@ -207,6 +189,7 @@ function App() {
   return (
     <div className="mx-auto max-w-[1550px] w-full max-h-[1080px] h-screen ">
       <div className="flex flex-row">
+        {/* SideBar  */}
         <SideBar
           rainChance={rainChance}
           currentTemperature={currTemp}
@@ -220,6 +203,8 @@ function App() {
           handleOnSubmit={handleSearch}
           degreeScale={degreeScale}
         />
+
+        {/* Dashboard */}
         <DashBoard
           dates={dTime}
           maxTemps={dMaxTemp}
